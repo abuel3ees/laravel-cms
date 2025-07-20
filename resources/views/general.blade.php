@@ -40,7 +40,7 @@
         <div class="card bg-dark text-white border border-secondary shadow-sm w-100">
             <div class="card-body">
                 <h5 class="card-title text-uppercase">MEDIA_FILES</h5>
-                <p class="card-text fs-3" style="color: #FF7500;">{{ $totalMedia ?? 'N/A' }}</p>
+                <p class="card-text fs-3" style="color: #FF7500;">{{ $mediaCount ?? 'N/A' }}</p>
             </div>
         </div>
     </div>

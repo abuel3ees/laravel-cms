@@ -67,8 +67,6 @@ class Usercontroller extends Controller
     public function destroy(User $user)
     {
         if(auth()->user()->id === $user->id) {
-            alert('You cannot delete your own account.');
-            // Alert the user that they cannot delete their own account
             return redirect()->back()->with('error', 'You cannot delete your own account.');
         }
 
