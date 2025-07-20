@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body {
+    background-color: #121212;
+    color: #f1f1f1 !important;
+    font-family: 'Space Mono', sans-serif;
+}
+
+.btn-orange {
+    background-color: #FF4433;
+    color: white;
+    border: none;
+}
+
+.btn-orange:hover {
+    background-color: #cc3628;
+}

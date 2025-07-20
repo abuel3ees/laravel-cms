@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
+body {
+    font-family: 'Space Mono', sans-serif;
+    background-color: #121212;
+    color: #f1f1f1;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.sidebar {
+    width: 80px;
+    background-color: #1f1f1f;
+}
+
+.sidebar .nav-link {
+    color: #ccc;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: #333;
+    color: #fff;
+}
+
+h1, h2 {
+    font-weight: 600;
+}
+
+.pagination .page-link {
+    background-color: #1a1a1a;
+    color: #FF4433;
+    border: 1px solid #333;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #FF4433;
+    color: white;
+    border: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #333;
+    color: white;
+}

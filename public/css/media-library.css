@@ -1,0 +1,51 @@
+body {
+    background-color: #121212;
+    color: #f1f1f1;
+}
+
+.card {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+}
+
+.card-body small {
+    color: #ccc;
+}
+
+.card-img-top {
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #333;
+}
+
+.btn-outline-danger {
+    border-color: #ff4d4d;
+    color: #ff4d4d;
+}
+
+.btn-outline-danger:hover {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.alert-success {
+    background-color: #1f3f1f;
+    border-color: #2ecc71;
+    color: #2ecc71;
+}
+
+.pagination .page-link {
+    background-color: #1a1a1a;
+    color: #FF4433;
+    border: 1px solid #333;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #FF4433;
+    color: white;
+    border: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #333;
+    color: white;
+}
