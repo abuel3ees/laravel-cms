@@ -64,7 +64,7 @@ body {
             Main Screen
         </a>
     @endif
-                            Dashboard
+                            
                         </a>
                     @else
                         <a
