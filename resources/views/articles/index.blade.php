@@ -6,7 +6,7 @@
 
 <!-- External CSS -->
 <link href="{{ asset('css/view-articles.css') }}" rel="stylesheet">
-
+<x-filteringsystem :users="$users" />
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     @foreach ($articles as $article)
         <x-articlecards :article="$article" />

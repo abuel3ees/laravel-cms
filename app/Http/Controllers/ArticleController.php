@@ -6,15 +6,30 @@ use App\Models\Article;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Media;
-
+use App\Models\User;
 class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(request $request)
     {
-        return view('articles.index', ['articles' => Article::latest()->paginate(6)] );
+        $query = Article::query();
+        if ($request ->filled('title')){
+            $query->where('title', 'like', '%' . $request->input('title') . '%');
+        }
+        if($request->filled('user_id')){
+            $query->where('user_id', $request->input('user_id'));
+        }
+
+        if($request ->filled('from') && $request ->filled('to')){
+            $query->whereBetween('created_at', [$request->input('from'), $request->input('to')]);
+        }
+
+        $articles = $query->latest()->paginate(6);
+        $users = User::select('id', 'name')->get();
+
+        return view('articles.index', compact('articles', 'users'));
     }
 
     /**
