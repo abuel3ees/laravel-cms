@@ -18,6 +18,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href={{ route('articles.import.form') }} class="nav-link">
+                        <i class="bi-plus-circle"></i> IMPORT_ARTICLES
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="/media" class="nav-link">
                         <i class="bi-image"></i> MEDIA
                     </a>

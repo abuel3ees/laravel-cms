@@ -20,6 +20,7 @@ return new class extends Migration
                 $table->foreign('media_id')->references('id')->on('media')->onDelete('set null');
                 $table->foreignId('user_id')->constrained()->onDelete('cascade'); // linked to users.id
                 $table->timestamps();
+                $table->string('status')->default('pending'); // Added status column
                 $table->softDeletes();
 });
     }

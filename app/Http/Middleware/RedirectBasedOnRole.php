@@ -14,7 +14,7 @@ class RedirectBasedOnRole
             if ($request->path() === 'login') {
                 $user = auth()->user();
 
-                if ($user->usertype === 'admin') {
+                if ($user->role === 'admin') {
                     return redirect()->route('dashboard');
                 }
 

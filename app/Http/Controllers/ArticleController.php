@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Media;
 use App\Models\User;
+use App\Imports\Articlesimport;
+use Maatwebsite\Excel\Facades\Excel;
 class ArticleController extends Controller
 {
     /**
@@ -25,7 +27,6 @@ class ArticleController extends Controller
         if($request ->filled('from') && $request ->filled('to')){
             $query->whereBetween('created_at', [$request->input('from'), $request->input('to')]);
         }
-
         $articles = $query->latest()->paginate(6);
         $users = User::select('id', 'name')->get();
 
@@ -98,7 +99,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        $article->update([
+            $article->update([
             'title' => $request->input('title'),
             'body' => $request->input('body'),
         ]);
@@ -125,5 +126,15 @@ class ArticleController extends Controller
         ->paginate(6);
 
     return view('articles.client', compact('articles'));
+}
+    public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|file|mimes:xlsx,csv',
+    ]);
+
+    Excel::import(new ArticlesImport, $request->file('file'));
+
+    return back()->with('success', '✅ Articles imported successfully!');
 }
 }

@@ -14,13 +14,15 @@ class AdminUserseeder extends Seeder
      */
     public function run(): void
     {
+        for( $i = 0; $i < 10; $i++ ) {
         User::updateOrCreate(
-            ['email' => 'root@root.com'],
+            ['email' => "root{$i}@root.com"],
             [
-                'name' => 'Root',
+                'name' => "Root{$i}",
                 'password' => Hash::make('12345678'),
                 'role' => 'admin',
             ]
         );
     }
+}
 }
