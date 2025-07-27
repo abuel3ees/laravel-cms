@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\publisharticlejob;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -73,7 +74,9 @@ class ArticleController extends Controller
                 'body' => $request->input('body'),
                 'user_id' => $user_id,
                 'media_id' => $media ? $media->id : null,
+                'status' => 'pending', // Default status
             ]);
+            dispatch(new publisharticlejob($article))->delay(now()->addMinutes(0.25));
             return redirect()->route('articles.index')->with('success','Article Addded Successfuly!');
         }
 
@@ -120,9 +123,9 @@ class ArticleController extends Controller
         return redirect()->route('articles.index')->with('success', 'Article deleted successfully.');
     }
     public function clientIndex()
-{
-    $articles = Article::whereNull('deleted_at')
-        ->latest()
+{       $articles = Article::where('status', 'published')
+        ->whereNull('deleted_at')
+        ->latest() 
         ->paginate(6);
 
     return view('articles.client', compact('articles'));
