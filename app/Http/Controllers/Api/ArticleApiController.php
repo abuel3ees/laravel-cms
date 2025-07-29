@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\ArticleService;
+use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
+use App\Models\Article;
 
 class ArticleApiController extends Controller
 {
@@ -30,36 +34,10 @@ class ArticleApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request, ArticleService $service)
     {
-        $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
-                'body' => 'required|string',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-            $user_id = auth()->id();
-
-            $media = null;
-            if ($request->hasFile('image')) {
-               $file = $request->file('image');
-                if($file){
-                    $path = $file->store('images', 'public');
-                    $media = Media::create([
-                        'file_name' => $file->getClientOriginalName(),
-                        'file_path' => $path,
-                        'mime_type' => $file->getClientMimeType(),
-                    ]);
-                }
-            }
-
-            $article = Article::create([
-                'title' => $request->input('title'),
-                'body' => $request->input('body'),
-                'user_id' => $user_id,
-                'media_id' => $media ? $media->id : null,
-            ]);
-            return response()->json(['message' => 'Article Added Successfully!', 'article' => $article]);
-
+        $service->store($request->validated(), $request->file('image'));
+        return response()->json(['message' => 'Article Added Successfully!'], 201);
     }
 
     /**
@@ -74,20 +52,9 @@ class ArticleApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+     public function update(UpdateArticleRequest $request, Article $article)
     {
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-        ]);
-
-        // Update the article
-        $article = Article::findOrFail($id);
-        $article->update([
-            'title' => $request->input('title'),
-            'body' => $request->input('body'),
-        ]);
+        $article->update($request->validated());
         return response()->json(['message' => 'Article updated successfully.', 'article' => $article]);
     }
     /**

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImportArticleRequest;
+use App\Http\Requests\StoreArticleRequest;
 use App\Jobs\publisharticlejob;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
+use App\Services\ArticleService;
 use Illuminate\Http\Request;
 use App\Models\Media;
 use App\Models\User;
 use App\Imports\Articlesimport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\UpdateArticleRequest;
 class ArticleController extends Controller
 {
     /**
@@ -46,38 +50,11 @@ class ArticleController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */
-        public function store(Request $request)
-        {
-            $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
-                'body' => 'required|string',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-            $user_id = auth()->id();
-
-            $media = null;
-            if ($request->hasFile('image')) {
-               $file = $request->file('image');
-                if($file){
-                    $path = $file->store('images', 'public');
-                    $media = Media::create([
-                        'file_name' => $file->getClientOriginalName(),
-                        'file_path' => $path,
-                        'mime_type' => $file->getClientMimeType(),
-                    ]);
-                }
-            }
-
-            $article = Article::create([
-                'title' => $request->input('title'),
-                'body' => $request->input('body'),
-                'user_id' => $user_id,
-                'media_id' => $media ? $media->id : null,
-                'status' => 'pending', // Default status
-            ]);
-            dispatch(new publisharticlejob($article))->delay(now()->addMinutes(0.25));
-            return redirect()->route('articles.index')->with('success','Article Addded Successfuly!');
+        */
+            public function store(StoreArticleRequest $request, ArticleService $service)
+            {  
+                $service->store($request->validated(), $request->file('image'));
+                return redirect()->route('articles.index')->with('success','Article Addded Successfuly!');
         }
 
     /**
@@ -100,12 +77,9 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-            $article->update([
-            'title' => $request->input('title'),
-            'body' => $request->input('body'),
-        ]);
+        $article->update($request->validated());
         return redirect()->route('articles.index')->with('success', 'Article updated successfully.');
     }
 
@@ -130,12 +104,8 @@ class ArticleController extends Controller
 
     return view('articles.client', compact('articles'));
 }
-    public function import(Request $request)
+    public function import(ImportArticleRequest $request)
 {
-    $request->validate([
-        'file' => 'required|file|mimes:xlsx,csv',
-    ]);
-
     Excel::import(new ArticlesImport, $request->file('file'));
 
     return back()->with('success', '✅ Articles imported successfully!');
