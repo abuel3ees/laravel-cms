@@ -8,26 +8,16 @@ use App\Services\ArticleService;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
+use App\Http\Requests\FilterArticleRequest;
 
 class ArticleApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(FilterArticleRequest $request, ArticleService $articleService)
     {
-         $query = Article::query();
-        if ($request ->filled('title')){
-            $query->where('title', 'like', '%' . $request->input('title') . '%');
-        }
-        if($request->filled('user_id')){
-            $query->where('user_id', $request->input('user_id'));
-        }
-
-        if($request ->filled('from') && $request ->filled('to')){
-            $query->whereBetween('created_at', [$request->input('from'), $request->input('to')]);
-        }
-        $articles = $query->latest()->paginate(6);
+        $articles = $articleService->filterArticles($request->validated());
         return response()->json($articles);
     }
 

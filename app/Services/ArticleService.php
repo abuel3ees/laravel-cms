@@ -29,4 +29,21 @@ class ArticleService{
         dispatch(new PublishArticleJob($article))->delay(now()->addSeconds(7));
         return $article;
     }
+    public function filterArticles(array $filters, int $perpage = 6){
+         $query = Article::query();
+
+    if (!empty($filters['title'])) {
+        $query->where('title', 'like', '%' . $filters['title'] . '%');
+    }
+
+    if (!empty($filters['user_id'])) {
+        $query->where('user_id', $filters['user_id']);
+    }
+
+    if (!empty($filters['from']) && !empty($filters['to'])) {
+        $query->whereBetween('created_at', [$filters['from'], $filters['to']]);
+    }
+
+    return $query->latest()->paginate($perpage);
+    }
 }

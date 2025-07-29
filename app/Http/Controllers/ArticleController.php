@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterArticleRequest;
 use App\Http\Requests\ImportArticleRequest;
 use App\Http\Requests\StoreArticleRequest;
 use App\Jobs\publisharticlejob;
@@ -19,23 +20,11 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(request $request)
+    public function index(FilterArticleRequest $request, ArticleService $articleService)
     {
-        $query = Article::query();
-        if ($request ->filled('title')){
-            $query->where('title', 'like', '%' . $request->input('title') . '%');
-        }
-        if($request->filled('user_id')){
-            $query->where('user_id', $request->input('user_id'));
-        }
-
-        if($request ->filled('from') && $request ->filled('to')){
-            $query->whereBetween('created_at', [$request->input('from'), $request->input('to')]);
-        }
-        $articles = $query->latest()->paginate(6);
-        $users = User::select('id', 'name')->get();
-
-        return view('articles.index', compact('articles', 'users'));
+       $articles = $articleService->filterArticles($request->validated());
+       $users = User::select('id', 'name')->get();
+    return view('articles.index', compact('articles', 'users'));
     }
 
     /**
