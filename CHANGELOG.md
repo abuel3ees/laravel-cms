@@ -1,6 +1,28 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/laravel/compare/v12.0.11...12.x)
+## [Unreleased](https://github.com/laravel/laravel/compare/CMS...main)
+
+## [CMS](https://github.com/laravel/laravel/compare/v12.0.11...CMS) - 2025-07-30
+
+QuillBoard v1.0 is a Laravel-powered content management system that allows administrators to effortlessly manage, publish, and organize articles. Designed with clean architecture and secure role-based access control, this release includes:
+
+🔐 Admin Authentication & Authorization
+
+📰 Article CRUD (Create, Read, Update, Delete)
+
+🗂️ Category & User Filtering
+
+🔍 Search & Pagination
+
+📅 Date-Based Filtering
+
+♻️ Soft Deletes & Restore Options
+
+🖼️ Media Integration for Article Images
+
+📊 Dashboard with Stats & Activity Overview
+
+Built for performance, security, and ease of use, QuillBoard is the perfect foundation for blogs, news portals, or any article-based application.
 
 ## [v12.0.11](https://github.com/laravel/laravel/compare/v12.0.10...v12.0.11) - 2025-06-10
 
