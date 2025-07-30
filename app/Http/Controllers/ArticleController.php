@@ -17,12 +17,14 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\UpdateArticleRequest;
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(FilterArticleRequest $request, ArticleService $articleService)
+    protected $articleService;
+    public function __construct(ArticleService $articleService)
     {
-       $articles = $articleService->filterArticles($request->validated());
+        $this->articleService = $articleService;
+    }
+    public function index(FilterArticleRequest $request)
+    {
+       $articles = $this->articleService->filterArticles($request->validated());
        $users = User::select('id', 'name')->get();
        return view('articles.index', compact('articles', 'users'));
     }
@@ -40,9 +42,9 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
         */
-            public function store(StoreArticleRequest $request, ArticleService $service)
+            public function store(StoreArticleRequest $request)
             {  
-                $service->store($request->validated(), $request->file('image'));
+                $this->articleService->store($request->validated(), $request->file('image'));
                 return redirect()->route('articles.index')->with('success','Article Addded Successfuly!');
         }
 
@@ -85,8 +87,8 @@ class ArticleController extends Controller
         $article->save();
         return redirect()->route('articles.index')->with('success', 'Article deleted successfully.');
     }
-    public function clientIndex(ArticleService $articleService)
-{       $articles = $articleService->clientShow();
+    public function clientIndex()
+{       $articles = $this->articleService->clientShow();
         // Fetch articles with status 'published' and not soft deleted
         // This method should return a view to display the client-side articles
 
