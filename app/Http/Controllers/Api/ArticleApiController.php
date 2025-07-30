@@ -12,6 +12,10 @@ use App\Http\Requests\FilterArticleRequest;
 
 class ArticleApiController extends Controller
 {
+    protected $articleService;
+    public function __construct(ArticleService $articleService){
+        $this->articleService = $articleService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -24,9 +28,9 @@ class ArticleApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreArticleRequest $request, ArticleService $service)
+    public function store(StoreArticleRequest $request)
     {
-        $service->store($request->validated(), $request->file('image'));
+        $this->articleService->store($request->validated(), $request->file('image'));
         return response()->json(['message' => 'Article Added Successfully!'], 201);
     }
 
