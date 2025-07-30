@@ -24,7 +24,7 @@ class ArticleController extends Controller
     {
        $articles = $articleService->filterArticles($request->validated());
        $users = User::select('id', 'name')->get();
-    return view('articles.index', compact('articles', 'users'));
+       return view('articles.index', compact('articles', 'users'));
     }
 
     /**
@@ -85,11 +85,10 @@ class ArticleController extends Controller
         $article->save();
         return redirect()->route('articles.index')->with('success', 'Article deleted successfully.');
     }
-    public function clientIndex()
-{       $articles = Article::where('status', 'published')
-        ->whereNull('deleted_at')
-        ->latest() 
-        ->paginate(6);
+    public function clientIndex(ArticleService $articleService)
+{       $articles = $articleService->clientShow();
+        // Fetch articles with status 'published' and not soft deleted
+        // This method should return a view to display the client-side articles
 
     return view('articles.client', compact('articles'));
 }

@@ -46,4 +46,12 @@ class ArticleService{
 
     return $query->latest()->paginate($perpage);
     }
+
+    public function clientShow(){
+        $articles = Article::where('status', 'published')
+        ->whereNull('deleted_at')
+        ->latest() 
+        ->paginate(6);
+        return $articles;
+    }
 }
